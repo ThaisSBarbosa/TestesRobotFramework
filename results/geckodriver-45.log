@@ -1,0 +1,12 @@
+1596034322808	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\atomi\\AppData\\Local\\Temp\\rust_mozprofileEMbO1G"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1596034325222	Marionette	INFO	Listening on port 55721
+1596034325418	Marionette	WARN	TLS certificate errors will be ignored for this session
+1596034331114	Marionette	INFO	Stopped listening on port 55721
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
