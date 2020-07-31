@@ -1,0 +1,4 @@
+robot -d ./results -L trace tests/TestSitePractice.robot
+robot -d ./results -L trace tests/TestSitePracticeBDD.robot
+
+

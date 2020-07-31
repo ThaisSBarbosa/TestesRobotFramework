@@ -5,6 +5,8 @@ Library    String
 *** Variables ***
 ${BROWSER}   firefox
 ${URL}   http://automationpractice.com
+&{DADOS}   nome=Thais   ultimoNome=Barbosa   senha=12345   endereco=Rua Serra do Mar   cidade=São Paulo   indiceestado=9   caixapostal=04455   celular=898989898   adicional=adress2
+@{PRODUTOS_SUBCATEGORIA}   Printed Summer Dress   Printed Summer Dress   Printed Chiffon Dress
 
 *** Keywords ***
 ## Setup e Teardown
@@ -49,11 +51,11 @@ Clicar na sub categoria "${SUBCATEGORIA}"
 
 Conferir se a página com os produtos da categoria "${SUBCATEGORIA}" foi exibida
    Wait Until Element Is Visible       xpath=//span[@class='cat-name'][contains(text(),'${SUBCATEGORIA}')]
-   Wait Until Element Is Visible       xpath=//ul[contains(@class,'product_list')]//li[contains(@class,'block_product')][1]
+   Wait Until Element Is Visible       xpath=//ul[contains(@class,'product_list')]//li[contains(@class,'block_product')][1]//h5//a[@title='${PRODUTOS_SUBCATEGORIA[0]}']
+   Wait Until Element Is Visible       xpath=//ul[contains(@class,'product_list')]//li[contains(@class,'block_product')][2]//h5//a[@title='${PRODUTOS_SUBCATEGORIA[1]}']
+   Wait Until Element Is Visible       xpath=//ul[contains(@class,'product_list')]//li[contains(@class,'block_product')][3]//h5//a[@title='${PRODUTOS_SUBCATEGORIA[2]}']
 
 Clicar no botão "Add to cart" do produto "${PRODUTO}"
-   # Wait Until Element Is Visible       xpath=//li[contains(@class,'block_product')][1]//a[@title='Add to cart']    20
-   # Click Element                       xpath=//li[contains(@class,'block_product')][1]//a[@title='Add to cart']
    Wait Until Element Is Visible       xpath=//*[@id='center_column']//img[contains(@alt,'${PRODUTO}')]    20
    Click Element                       xpath=//*[@id='center_column']//img[contains(@alt,'${PRODUTO}')]
    Wait Until Element Is Visible       xpath=//*[@id='add_to_cart']    20
@@ -94,8 +96,14 @@ Conferir se a página para fazer login foi exibida
 
 Inserir um e-mail válido
    Wait Until Element Is Visible    id=email_create
-   ${EMAIL}                         Generate Random String
-   Input Text    id=email_create    ${EMAIL}@testrobot.com
+   ${STRINGALEATORIA}   Generate Random String
+   ${EMAILVALIDO}   Criar um e-mail válido aleatoriamente   ${DADOS.nome}   ${DADOS.ultimoNome}   ${STRINGALEATORIA}
+   Input Text    id=email_create    ${EMAILVALIDO}
+
+Criar um e-mail válido aleatoriamente
+   [Arguments]   ${NOMEUSUARIO}   ${SOBRENOMEUSUARIO}   ${STRING}
+   ${EMAIL}      Set Variable     ${NOMEUSUARIO}${SOBRENOMEUSUARIO}${STRING}@testrobot.com
+   [Return]      ${EMAIL}
 
 Clicar no botão "Create an account"
    Wait Until Element Is Visible    id=SubmitCreate
@@ -106,17 +114,17 @@ Conferir se a página com os campos de cadastro foi exibida
 
 Preencher os campos obrigatórios
    Click Element                id=id_gender2
-   Input Text                   id=customer_firstname    Thais
-   Input Text                   id=customer_lastname     Barbosa
-   Input Text                   id=passwd                12345
-   Input Text                   id=address1              Rua Serra do Mar
-   Input Text                   id=city                  São Paulo
+   Input Text                   id=customer_firstname    ${DADOS.nome}
+   Input Text                   id=customer_lastname     ${DADOS.ultimoNome}
+   Input Text                   id=passwd                ${DADOS.senha}
+   Input Text                   id=address1              ${DADOS.endereco}
+   Input Text                   id=city                  ${DADOS.cidade}
    Set Focus To Element         id=id_state
    Run Keyword If               '${BROWSER}'=='firefox'  Wait Until Element Is Visible    id=uniform-id_state    30
-   Select From List By Index    id=id_state              9
-   Input Text                   id=postcode              04455
-   Input Text                   id=phone_mobile          898989898
-   Input Text                   id=alias                 adress2
+   Select From List By Index    id=id_state              ${DADOS.indiceestado}
+   Input Text                   id=postcode              ${DADOS.caixapostal}
+   Input Text                   id=phone_mobile          ${DADOS.celular}
+   Input Text                   id=alias                 ${DADOS.adicional}
 
 Clicar em "Register" para finalizar o cadastro
    Wait Until Element Is Visible    id=submitAccount
